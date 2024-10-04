@@ -26,9 +26,9 @@ yoke = { version = "0.7.4", features = ["derive"] }
 actix-web = { version = "4.8.0", optional = true }
 uuid = { version = "1.10.0", optional = true, features = ["v4"] }
 
-candle-core = { version = "0.6.0", git = "https://github.com/lucky9-cyou/candle", branch = "feat/update-cudarc-0.12.1"}
-candle-nn = { version = "0.6.0", git = "https://github.com/lucky9-cyou/candle", branch = "feat/update-cudarc-0.12.1" }
-candle-transformers = { version = "0.6.0", git = "https://github.com/lucky9-cyou/candle", branch = "feat/update-cudarc-0.12.1" }
+candle-core = { version = "0.7.2", git = "https://github.com/lucky9-cyou/candle", branch = "feat/update-cudarc-0.12.1"}
+candle-nn = { version = "0.7.2", git = "https://github.com/lucky9-cyou/candle", branch = "feat/update-cudarc-0.12.1" }
+candle-transformers = { version = "0.7.2", git = "https://github.com/lucky9-cyou/candle", branch = "feat/update-cudarc-0.12.1" }
 image = "0.25.2"
 hf-hub = "0.3.2"
 tracing-chrome = "0.7.2"

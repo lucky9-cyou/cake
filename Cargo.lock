@@ -633,8 +633,8 @@ dependencies = [
  "anyhow",
  "async-trait",
  "base64 0.22.1",
- "candle-core 0.6.1",
- "candle-nn 0.6.1",
+ "candle-core 0.7.2",
+ "candle-nn 0.7.2",
  "candle-transformers",
  "clap",
  "hf-hub",
@@ -718,8 +718,8 @@ dependencies = [
 
 [[package]]
 name = "candle-core"
-version = "0.6.1"
-source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#8db44740f7d56039682ca8b78a59e77c9b0d242a"
+version = "0.7.2"
+source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#71f9d0f8c83a9ff83613a817822ed6febd72dea2"
 dependencies = [
  "byteorder",
  "candle-kernels",
@@ -742,16 +742,16 @@ dependencies = [
 
 [[package]]
 name = "candle-kernels"
-version = "0.6.1"
-source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#8db44740f7d56039682ca8b78a59e77c9b0d242a"
+version = "0.7.2"
+source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#71f9d0f8c83a9ff83613a817822ed6febd72dea2"
 dependencies = [
  "bindgen_cuda",
 ]
 
 [[package]]
 name = "candle-metal-kernels"
-version = "0.6.1"
-source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#8db44740f7d56039682ca8b78a59e77c9b0d242a"
+version = "0.7.2"
+source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#71f9d0f8c83a9ff83613a817822ed6febd72dea2"
 dependencies = [
  "metal",
  "once_cell",
@@ -776,10 +776,10 @@ dependencies = [
 
 [[package]]
 name = "candle-nn"
-version = "0.6.1"
-source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#8db44740f7d56039682ca8b78a59e77c9b0d242a"
+version = "0.7.2"
+source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#71f9d0f8c83a9ff83613a817822ed6febd72dea2"
 dependencies = [
- "candle-core 0.6.1",
+ "candle-core 0.7.2",
  "candle-metal-kernels",
  "half",
  "metal",
@@ -792,12 +792,12 @@ dependencies = [
 
 [[package]]
 name = "candle-transformers"
-version = "0.6.1"
-source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#8db44740f7d56039682ca8b78a59e77c9b0d242a"
+version = "0.7.2"
+source = "git+https://github.com/lucky9-cyou/candle?branch=feat/update-cudarc-0.12.1#71f9d0f8c83a9ff83613a817822ed6febd72dea2"
 dependencies = [
  "byteorder",
- "candle-core 0.6.1",
- "candle-nn 0.6.1",
+ "candle-core 0.7.2",
+ "candle-nn 0.7.2",
  "fancy-regex",
  "num-traits",
  "rand",
@@ -1897,7 +1897,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4979f22fdb869068da03c9f7528f8297c6fd2606bc3a4affe42e6a823fdb8da4"
 dependencies = [
  "cfg-if",
- "windows-targets 0.52.6",
+ "windows-targets 0.48.5",
 ]
 
 [[package]]
@@ -3896,7 +3896,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.48.0",
 ]
 
 [[package]]
