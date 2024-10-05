@@ -66,7 +66,7 @@ where
 
     let mut master = state.write().await;
 
-    master.reset().unwrap();
+    // master.reset().unwrap();
 
     let llm_model = master.llm_model.as_mut().expect("LLM model not found");
 
@@ -92,7 +92,14 @@ where
 
     let response = ChatResponse::from_assistant_response(TG::MODEL_NAME.to_string(), resp);
 
-    master.goodbye().await.unwrap();
+    master
+        .llm_model
+        .as_mut()
+        .expect("LLM model not found")
+        .add_message_l(response.choices[0].message.clone())
+        .unwrap();
+
+    // master.goodbye().await.unwrap();
 
     HttpResponse::Ok().json(response)
 }

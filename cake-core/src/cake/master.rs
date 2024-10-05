@@ -113,6 +113,8 @@ impl<TG: TextGenerator + Send + Sync + 'static, IG: ImageGenerator + Send + Sync
         let mut start_gen = std::time::Instant::now();
         let llm_model = self.llm_model.as_mut().expect("LLM model not found");
 
+        llm_model.start_dialog_prompt()?;
+
         for index in 0..self.ctx.args.sample_len {
             if index == 1 {
                 // record start time again since the first token is the warmup

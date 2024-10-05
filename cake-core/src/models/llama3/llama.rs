@@ -67,6 +67,7 @@ pub struct LLama {
     logits_processor: LogitsProcessor,
 
     history: History,
+    history_len: usize,
     tokens: Vec<u32>,
 }
 
@@ -137,34 +138,6 @@ impl LLama {
         logits
             .to_dtype(DType::F32)
             .map_err(|e| anyhow!("error converting logits: {e}"))
-    }
-
-    fn start_dialog_prompt(&mut self) -> Result<()> {
-        // make sure we start clean
-        self.tokens.clear();
-        self.ctx.cache.as_mut().expect("No cache specified").clear();
-        self.index_pos = 0;
-
-        log::debug!("generating history tokens ...");
-
-        // generate raw from history
-        let dialog = self.history.encode_dialog_to_prompt();
-
-        log::debug!("dialog={}", &dialog);
-
-        // tokenize raw
-        self.tokens = self
-            .tokenizer
-            .encode(dialog, false) // do not add special tokens as we already added them
-            .map_err(anyhow::Error::msg)?
-            .get_ids()
-            .to_vec();
-
-        log::debug!("encoded={:?}", &self.tokens);
-
-        log::debug!("history tokens: {}", self.tokens.len());
-
-        Ok(())
     }
 }
 
@@ -240,6 +213,7 @@ impl Generator for LLama {
             tokens,
             generated,
             history,
+            history_len: 0,
             eos_token_id,
             index_pos,
             ctx: ctx.clone(),
@@ -257,6 +231,43 @@ impl TextGenerator for LLama {
     /// Add a message to the chat history.
     fn add_message(&mut self, message: Message) -> Result<()> {
         self.history.push(message);
+        log::debug!("history: {:?}", &self.history);
+        Ok(())
+    }
+
+    /// Add a message to the chat history and update the length.
+    fn add_message_l(&mut self, message: Message) -> Result<()> {
+        self.history.push(message);
+        self.history_len += 1;
+        log::debug!("history: {:?}", &self.history);
+        Ok(())
+    }
+
+    fn start_dialog_prompt(&mut self) -> Result<()> {
+        // make sure we start clean
+        self.tokens.clear();
+        self.ctx.cache.as_mut().expect("No cache specified").clear();
+        self.index_pos = 0;
+
+        log::debug!("generating history tokens ...");
+
+        // generate raw from history
+        let dialog = self.history.encode_dialog_to_prompt(&mut self.history_len);
+
+        log::debug!("dialog={}", &dialog);
+
+        // tokenize raw
+        self.tokens = self
+            .tokenizer
+            .encode(dialog, false) // do not add special tokens as we already added them
+            .map_err(anyhow::Error::msg)?
+            .get_ids()
+            .to_vec();
+
+        log::debug!("encoded={:?}", &self.tokens);
+
+        log::debug!("history tokens: {}", self.tokens.len());
+
         Ok(())
     }
 
@@ -288,9 +299,9 @@ impl TextGenerator for LLama {
         log::trace!("model.next_token({index})");
 
         // Prefill tokens with chat history the first time.
-        if self.generated == 0 {
-            self.start_dialog_prompt()?;
-        }
+        // if self.generated == 0 {
+        //     self.start_dialog_prompt()?;
+        // }
 
         let num_tokens = self.tokens.len();
         let (context_size, context_index) = if self

@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// The role of a message in a chat.
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum MessageRole {
     /// System prompt.
     #[serde(alias = "system")]
@@ -29,7 +29,7 @@ impl std::fmt::Display for MessageRole {
 }
 
 /// A chat message.
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Message {
     /// Message role.
     pub role: MessageRole,

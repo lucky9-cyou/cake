@@ -224,7 +224,7 @@ impl<G: Generator + 'static> Worker<G> {
                 {
                     return Err(anyhow!("[{}] could not send worker info: {:?}", &client, e));
                 }
-                
+
                 continue;
             }
 

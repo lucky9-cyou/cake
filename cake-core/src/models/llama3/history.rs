@@ -20,12 +20,22 @@ impl History {
     }
 
     /// Encode the dialog to llama3 prompt format.
-    pub fn encode_dialog_to_prompt(&self) -> String {
-        let mut encoded = "<|begin_of_text|>".to_string();
-
-        for message in self.iter() {
-            encoded += &Self::encode_message(message);
+    pub fn encode_dialog_to_prompt(&self, history_len: &mut usize) -> String {
+        let mut encoded = "".to_string();
+        if history_len == &0 {
+            encoded += "<|begin_of_text|>";
         }
+
+        log::info!("history_len = {} self len = {}", history_len, self.len());
+        // start from history_len
+        for message in self.iter().rev().take(self.len() - *history_len).rev() {
+            encoded += &Self::encode_message(message);
+            *history_len += 1;
+        }
+
+        // for message in self.iter() {
+        //     encoded += &Self::encode_message(message);
+        // }
 
         //  Add the start of an assistant message for the model to complete.
         encoded += &Self::encode_header(&Message::assistant("".to_string()));

@@ -52,6 +52,13 @@ pub trait Generator {
 pub trait TextGenerator: Generator {
     /// Add a message to the chat.
     fn add_message(&mut self, message: Message) -> Result<()>;
+
+    /// add a message to the chat, update length
+    fn add_message_l(&mut self, message: Message) -> Result<()>;
+
+    /// tokenize the history
+    fn start_dialog_prompt(&mut self) -> Result<()>;
+
     /// Clear chat history.
     fn reset(&mut self) -> Result<()>;
 
@@ -60,6 +67,7 @@ pub trait TextGenerator: Generator {
 
     /// Return the next token.
     async fn next_token(&mut self, index: usize) -> Result<Token>;
+
     /// Return the number of generated tokens so far.
     fn generated_tokens(&self) -> usize;
 }

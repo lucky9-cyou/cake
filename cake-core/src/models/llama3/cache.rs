@@ -96,10 +96,17 @@ impl Cache {
         mut k: Tensor,
         mut v: Tensor,
     ) -> Result<(Tensor, Tensor)> {
+        let (_, _, seq_len, _) = k.dims4().map_err(|e| anyhow!("x.dims4 -> {e}")).unwrap();
+
+        let ori_k = k.clone();
+        let ori_v = v.clone();
+
         if self.use_kv_cache {
             // if this block_idx in cache
             if let Some((cache_k, cache_v)) = &self.kvs[block_idx] {
                 // update cache entry
+                log::info!("cache k {:?}, cache v {:?}", cache_k, cache_v);
+                // if seq_len != 0 {}
                 k = Tensor::cat(&[cache_k, &k], 2)?.contiguous()?;
                 v = Tensor::cat(&[cache_v, &v], 2)?.contiguous()?;
                 let k_seq_len = k.dims()[1];
@@ -115,10 +122,16 @@ impl Cache {
                         .contiguous()?
                 }
             }
+
             // set entry for this block
             self.kvs[block_idx] = Some((k.clone(), v.clone()))
         }
-        Ok((k, v))
+
+        if seq_len > 1 {
+            Ok((ori_k, ori_v))
+        } else {
+            Ok((k, v))
+        }
     }
 
     /// Return a copy of this cache with the same state but new kv table.

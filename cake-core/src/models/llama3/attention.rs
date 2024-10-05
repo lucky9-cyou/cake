@@ -44,7 +44,7 @@ impl CausalSelfAttention {
     ) -> anyhow::Result<Tensor> {
         let (b_sz, seq_len, hidden_size) = x.dims3().map_err(|e| anyhow!("x.dims3 -> {e}"))?;
 
-        // log::info!("x.dims3 = {:?}", x.dims3().unwrap());
+        log::info!("x.dims3 = {:?}", x.dims3().unwrap());
 
         let q = self
             .q_proj
@@ -100,8 +100,10 @@ impl CausalSelfAttention {
             let v = v.to_dtype(DType::F32)?;
             let att = (q.matmul(&k.t()?)? / (self.head_dim as f64).sqrt())?;
             let att = if seq_len == 1 {
+                log::info!("seq_len is 1 attention shape = {:?}", att.shape());
                 att
             } else {
+                log::info!("seq_len = {} attention shape = {:?}", seq_len, att.shape());
                 let mask = cache
                     .mask(seq_len)
                     .map_err(|e| anyhow!("cache.mask({seq_len}) -> {e}"))?
